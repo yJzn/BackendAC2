@@ -29,13 +29,9 @@
                     lista.innerHTML = "";
 
                     projetos.forEach(p => {
-                        lista.innerHTML += "<li>" + p.id + " - " + p.descricao + "</li>";
+                        lista.innerHTML += "<li>" + p.id + " - " + p.descricao + " - " + p.dataInicio + " - " + p.dataFim + "</li>";
                     });
                 })
-                .catch(erro => {
-                    document.getElementById("mensagem").innerText = "Erro ao listar projetos";
-                    console.log(erro);
-                });
         }
 
         function salvar() {
@@ -67,3 +63,4 @@
 
 </body>
 </html>
+
