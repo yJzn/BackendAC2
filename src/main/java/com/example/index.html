@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Projetos</title>
+</head>
+<body>
+
+    <h2>Projetos</h2>
+
+    <input type="text" id="descricao" placeholder="Descrição"><br>
+    <input type="date" id="dataInicio"><br>
+    <input type="date" id="dataFim"><br>
+
+    <button onclick="salvar()">Salvar</button>
+
+    <p id="mensagem"></p>
+
+    <h3>Lista de Projetos</h3>
+    <ul id="lista"></ul>
+
+    <script>
+        const api = "http://localhost:8080/projetos";
+
+        function listar() {
+            fetch(api)
+                .then(resposta => resposta.json())
+                .then(projetos => {
+                    const lista = document.getElementById("lista");
+                    lista.innerHTML = "";
+
+                    projetos.forEach(p => {
+                        lista.innerHTML += "<li>" + p.id + " - " + p.descricao + "</li>";
+                    });
+                })
+                .catch(erro => {
+                    document.getElementById("mensagem").innerText = "Erro ao listar projetos";
+                    console.log(erro);
+                });
+        }
+
+        function salvar() {
+            const projeto = {
+                descricao: document.getElementById("descricao").value,
+                dataInicio: document.getElementById("dataInicio").value,
+                dataFim: document.getElementById("dataFim").value
+            };
+
+            fetch(api, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(projeto)
+            })
+            .then(resposta => {
+                if (resposta.ok) {
+                    document.getElementById("mensagem").innerText = "Projeto salvo com sucesso";
+                    listar();
+                } else {
+                    document.getElementById("mensagem").innerText = "Erro ao salvar projeto";
+                }
+            })
+        }
+
+        listar();
+    </script>
+
+</body>
+</html>
